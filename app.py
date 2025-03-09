@@ -1,6 +1,10 @@
+import os
 import streamlit as st
 import pandas as pd
 from io import BytesIO
+
+# Install dependencies
+os.system('pip install -r requirements.txt')
 
 # Set Streamlit page configuration
 st.set_page_config(page_title="Khalil Page Converter Service")
@@ -13,14 +17,13 @@ st.markdown(
 
 st.write("Upload CSV or Excel files, clean data, and convert formats.")
 
-
 # File uploader for CSV and Excel files
 files = st.file_uploader("Upload CSV or Excel Files:", type=["csv", "xlsx"], accept_multiple_files=True)
 
 if files:
     for file in files:
         ext = file.name.split(".")[-1].lower()  # Extract file extension
-        df = pd.read_csv(file) if ext == "csv" else pd.read_excel(file)
+        df = pd.read_csv(file) if ext == "csv" else pd.read_excel(file, engine="openpyxl")
 
         st.subheader(f"{file.name} - Preview")
         st.dataframe(df.head())
